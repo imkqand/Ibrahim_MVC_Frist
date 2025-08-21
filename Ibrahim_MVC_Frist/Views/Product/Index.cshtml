@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Product>
+@{
+    ViewData["Title"] = "Index";
+}
+
+@* @if (TempData["Success"] != null)
+{
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"] ✅
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"] ❌
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+} *@
+
+
+
+<h1>Product</h1>
+<partial name="_NotificationPartial" />
+<div class="text-end">
+    <a asp-action="create" class="btn btn-primary mb-3">Create New</a>
+</div> 
+
+<div class="bg-white">
+    <table class="table table-bordered table-striped mb-3">
+
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Category</th>
+                <th>CreatedDate</th>
+                <th>IsAvailable</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var Productss in Model)
+            {
+                <tr>
+                    <td>@Productss.Id</td>
+                    <td>@Productss.Name</td>
+                    <td>@Productss.Price</td>
+                    <td>@Productss.Quantity</td>
+                    <td>@Productss.Category</td>
+                    <td>@Productss.CreatedDate</td>
+                    <td>@Productss.IsAvailable</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-Id="@Productss.Id" class="btn btn-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@Productss.Id" class="btn btn-danger">Delete</a>
+
+                    </td>
+                </tr>
+
+            }
+
+
+        </tbody>
+
+
+
+    </table>
+
+</div>

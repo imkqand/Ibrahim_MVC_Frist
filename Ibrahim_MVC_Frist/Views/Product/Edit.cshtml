@@ -1,0 +1,42 @@
+﻿@model Product
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Product</h1>
+
+<form asp-action="Edit" method="post">
+<div>
+    <label>Product Name</label>
+        <input asp-for="Name" name="Name" class="form-control" />
+</div>
+
+<div>
+    <label>Product Description </label>
+        <textarea asp-for="Description" name="Description" class="form-control mb-3"></textarea>
+</div>
+
+<div>
+    <label>Product Price</label>
+        <input asp-for="Price" name="Price" class="form-control" />
+</div>
+<div>
+    <label>Product Quantity</label>
+        <input asp-for="Quantity" name="Quantity" class="form-control" />
+</div>
+<div>
+    <label>Product Category</label>
+        <input asp-for="Category" name="Category" class="form-control" />
+</div>
+
+
+
+    <div>
+        <label>Product IsAvailable</label>
+        <input asp-for="IsAvailable" type="checkbox" name="IsAvailable" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Edit</button>
+
+</form>
+

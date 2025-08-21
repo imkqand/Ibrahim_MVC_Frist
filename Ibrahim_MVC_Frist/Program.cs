@@ -1,7 +1,23 @@
+using Ibrahim_MVC_Frist.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
+
+
+
+var conectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(conectionString));
+
+
+
+
 
 var app = builder.Build();
 
@@ -12,6 +28,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+app.MapControllers(); // API attrebute routing
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
