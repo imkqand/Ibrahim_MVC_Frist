@@ -25,7 +25,7 @@ namespace Ibrahim_MVC_Frist.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            IEnumerable<Employee> emps = _context.employeesm.ToList( ).Where(e => e.Id < 50);
+            IEnumerable<Employee> emps = _context.employeesm.ToList();
 
 
             if (emps.Any())
@@ -53,10 +53,23 @@ namespace Ibrahim_MVC_Frist.Controllers
         [HttpPost]
         public IActionResult Create(Employee empl)
         {
-            _context.employeesm.Add(empl);
-            _context.SaveChanges();
-            TempData["Add"] = "تم اضافة البيانات بنجاح";
-            return RedirectToAction("Index");
+            if (empl.Name == "100")
+            {
+                ModelState.AddModelError("custumErorr", "Name can not be Equal 100");
+            }
+
+
+            if (ModelState.IsValid)
+            {
+                _context.employeesm.Add(empl);
+                _context.SaveChanges();
+                TempData["Add"] = "تم اضافة البيانات بنجاح";
+                return RedirectToAction("Index");
+            }
+            else { return View(empl); }
+
+
+           
 
         }
 

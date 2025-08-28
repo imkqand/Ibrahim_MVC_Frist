@@ -24,10 +24,15 @@
     <label>Product Quantity</label>
         <input asp-for="Quantity" name="Quantity" class="form-control" />
 </div>
-<div>
-    <label>Product Category</label>
-        <input asp-for="Category" name="Category" class="form-control" />
-</div>
+    <div>
+        <label>Product Category</label>
+
+        <select asp-for="CategoryId" class="form-control" asp-items="@ViewBag.categoryDtos"> 
+         <option disabled value="0">Select Category</option>
+        </select>
+
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
 
 
 

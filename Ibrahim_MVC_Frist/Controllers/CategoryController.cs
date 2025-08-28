@@ -1,6 +1,8 @@
 ﻿using Ibrahim_MVC_Frist.Data;
+using Ibrahim_MVC_Frist.Dtos;
 using Ibrahim_MVC_Frist.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Ibrahim_MVC_Frist.Controllers
 {
@@ -24,7 +26,7 @@ namespace Ibrahim_MVC_Frist.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            IEnumerable<Category> category = _context.Categories.ToList().Where(e=>e.Id<50);
+            IEnumerable<Category> category = _context.Categories.ToList();
          
 
 
@@ -44,6 +46,7 @@ namespace Ibrahim_MVC_Frist.Controllers
         [HttpGet]
         public IActionResult create()
         {
+            
 
             return View();
         }
@@ -51,17 +54,54 @@ namespace Ibrahim_MVC_Frist.Controllers
         [HttpPost]
         public IActionResult create(Category category)
         {
-            if(ModelState.IsValid)
+
+
+            //try
+            //{
+            //    if (category.Name == "100")
+            //    {
+            //        ModelState.AddModelError("custumErorr", "Name can not be Equal 100");
+            //    }
+
+            //    if (ModelState.IsValid)
+            //    {
+            //        category.Name = null;
+            //        _context.Categories.Add(category);
+            //        _context.SaveChanges();
+            //        TempData["Add"] = "تم اضافة البيانات ";
+            //        return RedirectToAction("Index");
+            //    }
+            //    else { return View(category); }
+
+            //}
+            //catch (Exception e)
+            //{
+            //    ModelState.AddModelError("" , " حدث خطاء اثناء تحميل البيانات :"+ e.Message);
+            //    return View(category);
+
+            //}
+
+
+
+
+
+            if (category.Name == "100")
+            {
+                ModelState.AddModelError("custumErorr", "Name can not be Equal 100");
+            }
+
+            if (ModelState.IsValid)
             {
                 _context.Categories.Add(category);
                 _context.SaveChanges();
                 TempData["Add"] = "تم اضافة البيانات ";
                 return RedirectToAction("Index");
-
             }
+            else { return View(category); }
 
-            return View(category);
-            
+
+
+
         }
 
 

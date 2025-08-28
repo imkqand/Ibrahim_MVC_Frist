@@ -6,33 +6,48 @@
 <h1>create</h1>
 
 <form asp-action="create" method="post">
+
     <div>
         <label>Product Name</label>
-        <input name="Name" class="form-control" />
+        <input asp-for="Name" name="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+
     </div>
 
     <div>
         <label>Product Description </label>
-        <textarea name="Description" class="form-control mb-3"></textarea>
+        <textarea asp-for="Description" name="Description" class="form-control mb-3"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
     </div>
 
     <div>
         <label>Product Price</label>
-        <input name="Price" class="form-control" />
+        <input asp-for="Price" name="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+
     </div>
     <div>
         <label>Product Quantity</label>
-        <input name="Quantity" class="form-control" />
+        <input asp-for="Quantity" name="Quantity" class="form-control" />
+        <span asp-validation-for="Quantity" class="text-danger"></span>
     </div>
     <div>
         <label>Product Category</label>
-        <input name="Category" class="form-control" />
+
+        <select asp-for="CategoryId" class="form-control" asp-items="@ViewBag.categoryDtos">
+            
+            <option select disabled value="0">Select Category</option>
+        
+        </select>
+
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
 
 
     <div>
         <label>Product IsAvailable</label>
-        <input type="checkbox" name="IsAvailable" />
+        <input asp-for="IsAvailable" type="checkbox" name="IsAvailable" />
+        <span asp-validation-for="IsAvailable" class="text-danger"></span>
     </div>
 
 
@@ -41,6 +56,9 @@
     <button type="submit" class="btn btn-primary">Save</button>
 
 </form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
 
 
 

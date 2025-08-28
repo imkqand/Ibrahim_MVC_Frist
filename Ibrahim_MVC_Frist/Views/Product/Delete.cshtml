@@ -26,7 +26,10 @@
     </div>
     <div>
         <label>Product Category</label>
-        <input asp-for="Category" name="Category" class="form-control" />
+
+        <select asp-for="CategoryId" class="form-control" asp-items="@ViewBag.categoryDtos"> </select>
+
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
 
 

@@ -6,15 +6,26 @@
 <h1>create</h1>
 
 <form asp-action="create" method="post">
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+
     <div>
         <label>Emolyee Name</label>
-        <input name="Name" class="form-control" />
+        <input asp-for="Name" name="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+
     </div>
 
     <div>
         <label>Emolyee Phone</label>
-        <textarea name="Phone" class="form-control mb-3"></textarea>
+        <textarea asp-for="Phone" name="Phone" class="form-control mb-3"></textarea>
+        <span asp-validation-for="Phone" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
 
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
