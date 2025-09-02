@@ -1,6 +1,7 @@
 ﻿using Ibrahim_MVC_Frist.Data;
 using Ibrahim_MVC_Frist.Dtos;
 using Ibrahim_MVC_Frist.Models;
+using Ibrahim_MVC_Frist.Repository.Base;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,23 +11,39 @@ namespace Ibrahim_MVC_Frist.Controllers
     public class ProductController : Controller
     {
 
-        private readonly ApplicationDbContext _context;
+        // private readonly ApplicationDbContext _context;
 
-        public ProductController(ApplicationDbContext context)
+
+        //public ProductController(ApplicationDbContext context)
+        //{
+        //    _context = context;
+        //}
+
+
+        //private readonly IRepository<Product> _repository;
+        private readonly IRepository<Category> _repositoryCategory;
+        private readonly IRepoProduct _repoProduct;
+
+        public ProductController(  IRepository<Category> repositoryCategory, IRepoProduct repoProduct)
         {
-            _context = context;
+
+           // _repository = repository;
+            _repositoryCategory = repositoryCategory;
+            _repoProduct = repoProduct;
         }
 
         private void CreateCategoryList()
         {
-           // List<CategoryDto> categoryDtos = new List<CategoryDto> {
-           //// new CategoryDto { Id = 0, Name = "Select Category"},
-           // new CategoryDto { Id = 1, Name = "Elictronic"},
-           // new CategoryDto { Id = 2, Name = "Clothing"},
-           // new CategoryDto { Id = 3, Name = "Mobile"}
-           //   };
+            // List<CategoryDto> categoryDtos = new List<CategoryDto> {
+            //// new CategoryDto { Id = 0, Name = "Select Category"},
+            // new CategoryDto { Id = 1, Name = "Elictronic"},
+            // new CategoryDto { Id = 2, Name = "Clothing"},
+            // new CategoryDto { Id = 3, Name = "Mobile"}
+            //   };
 
-            List<Category> cat =_context.Categories.ToList();
+            //List<Category> cat = _context.Categories.ToList();
+
+            IEnumerable<Category> cat = _repositoryCategory.FindAll().ToList();
             SelectList selectListItems = new SelectList(cat, "Id", "Name", 0);
             ViewBag.categoryDtos = selectListItems;
         }
@@ -34,28 +51,31 @@ namespace Ibrahim_MVC_Frist.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Product>> GetAll()
         {
-            var products =
-                _context.Products
-                .Include(e => e.Category)
-                .AsNoTracking() // تعمل asNoTraking اذا فيه بيانات في الصفحه ما تبغى تعدلها الا من الادمن فقط اما اذا فيه بيانات تتعدل لازم ما تسوي نوت تراك
-                .Select(p=> new ProductDto
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Description = p.Description,
-                    Price = p.Price,
-                    Quantity = p.Quantity,
-                    CategoryId = p.CategoryId
+        //    var products =
+        //        _context.Products
+        //        .Include(e => e.Category)
+        //        .AsNoTracking() // تعمل asNoTraking اذا فيه بيانات في الصفحه ما تبغى تعدلها الا من الادمن فقط اما اذا فيه بيانات تتعدل لازم ما تسوي نوت تراك
+        //        .Select(p=> new ProductDto
+        //        {
+        //            Id = p.Id,
+        //            Name = p.Name,
+        //            Description = p.Description,
+        //            Price = p.Price,
+        //            Quantity = p.Quantity,
+        //            CategoryId = p.CategoryId
 
-                })
-                .ToList();
+        //        })
+        //        .ToList();
+
+                var products = _repoProduct.FindAllProducts().ToList();
             return Ok(products);
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            IEnumerable<Product> Products = _context.Products.Include(e => e.Category).ToList();
+            //IEnumerable<Product> Products = _context.Products.Include(e => e.Category).ToList();
+            IEnumerable<Product> Products = _repoProduct.FindAllProducts(); 
 
             if (Products.Any())
             {  
@@ -73,6 +93,7 @@ namespace Ibrahim_MVC_Frist.Controllers
         [HttpGet]
         public IActionResult create()
         {
+
             CreateCategoryList();
             return View();
            
@@ -90,8 +111,9 @@ namespace Ibrahim_MVC_Frist.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.Products.Add(Products);
-                _context.SaveChanges();
+                //_context.Products.Add(Products);
+                //_context.SaveChanges();
+                _repoProduct.Add(Products);
                 TempData["Add"] = "تم اضافة البيانات بنجاح";
                 return RedirectToAction("Index");
             }
@@ -104,7 +126,8 @@ namespace Ibrahim_MVC_Frist.Controllers
         [HttpGet]
         public IActionResult Edit(int Id)
         {
-            var products = _context.Products.Find(Id);
+            //var products = _context.Products.Find(Id);
+            var products = _repoProduct.FindById(Id);
             CreateCategoryList();
             return View(products);
         }
@@ -112,8 +135,9 @@ namespace Ibrahim_MVC_Frist.Controllers
         [HttpPost]
         public IActionResult Edit(Product products)
         {
-            _context.Products.Update(products);
-            _context.SaveChanges();
+            //_context.Products.Update(products);
+            //_context.SaveChanges();
+            _repoProduct.Update(products);
             TempData["Update"] = "تم تحديث البيانات بنجاح";
             return RedirectToAction("Index");
 
@@ -123,7 +147,8 @@ namespace Ibrahim_MVC_Frist.Controllers
         [HttpGet]
         public IActionResult Delete(int Id)
         {
-            var products = _context.Products.Find(Id);
+            //var products = _context.Products.Find(Id);
+            var products = _repoProduct.FindById(Id);
             CreateCategoryList();
             return View(products);
         }
@@ -131,8 +156,9 @@ namespace Ibrahim_MVC_Frist.Controllers
         [HttpPost]
         public IActionResult Delete(Product products)
         {
-            _context.Products.Remove(products);
-            _context.SaveChanges();
+            //_context.Products.Remove(products);
+            //_context.SaveChanges();
+            _repoProduct.Delete(products);
             TempData["Remove"] = "تم حذف البيانات بنجاح";
             return RedirectToAction("Index");
 

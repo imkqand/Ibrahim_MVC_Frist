@@ -1,5 +1,6 @@
 ﻿using Ibrahim_MVC_Frist.Data;
 using Ibrahim_MVC_Frist.Models;
+using Ibrahim_MVC_Frist.Repository.Base;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ibrahim_MVC_Frist.Controllers
@@ -9,23 +10,33 @@ namespace Ibrahim_MVC_Frist.Controllers
 
 
         private readonly ApplicationDbContext _context;
+        private readonly IRepository<Employee> _repository;
 
-        public EmployeesController(ApplicationDbContext context)
+
+
+        //public CategoryController(ApplicationDbContext context, IRepository<Category> repository)
+        //{
+        //    _context = context;
+        //    _repository = _repository;
+        //}
+
+        public EmployeesController(IRepository<Employee> repository)
         {
-            _context = context;
+            _repository = repository;   
         }
-
         [HttpGet]
         public ActionResult<IEnumerable<Employee>> GetAll()
         {
-            var emps = _context.employeesm.ToList();
+           // var emps = _context.employeesm.ToList();
+            var emps = _repository.FindAll().ToList();
             return Ok(emps);
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            IEnumerable<Employee> emps = _context.employeesm.ToList();
+            // IEnumerable<Employee> emps = _context.employeesm.ToList();
+            IEnumerable<Employee> emps = _repository.FindAll().ToList();
 
 
             if (emps.Any())
@@ -61,8 +72,9 @@ namespace Ibrahim_MVC_Frist.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.employeesm.Add(empl);
-                _context.SaveChanges();
+                //_context.employeesm.Add(empl);
+                //_context.SaveChanges();
+                _repository.Add(empl);
                 TempData["Add"] = "تم اضافة البيانات بنجاح";
                 return RedirectToAction("Index");
             }
@@ -77,15 +89,17 @@ namespace Ibrahim_MVC_Frist.Controllers
         [HttpGet]
         public IActionResult Edit(int Id)
         {
-            var emps = _context.employeesm.Find(Id);
+           // var emps = _context.employeesm.Find(Id);
+            var emps = _repository.FindById(Id);
             return View(emps);
         }
 
         [HttpPost]
         public IActionResult Edit(Employee emps)
         {
-            _context.employeesm.Update(emps);
-            _context.SaveChanges();
+            //_context.employeesm.Update(emps);
+            //_context.SaveChanges();
+            _repository.Update(emps);
             TempData["Update"] = "تم تحديث البيانات بنجاح";
             return RedirectToAction("Index");
 
@@ -95,15 +109,17 @@ namespace Ibrahim_MVC_Frist.Controllers
         [HttpGet]
         public IActionResult Delete(int Id)
         {
-            var emps = _context.employeesm.Find(Id);
+           // var emps = _context.employeesm.Find(Id);
+            var emps = _repository.FindById(Id);
             return View(emps);
         }
 
         [HttpPost]
         public IActionResult Delete(Employee emps)
         {
-            _context.employeesm.Remove(emps);
-            _context.SaveChanges();
+            //_context.employeesm.Remove(emps);
+            //_context.SaveChanges();
+            _repository.Delete(emps);
             TempData["Remove"] = "تم حذف البيانات بنجاح";
             return RedirectToAction("Index");
 
