@@ -42,7 +42,7 @@ namespace Ibrahim_MVC_Frist.Controllers
         public IActionResult Index()
         {
             // IEnumerable<Employee> emps = _context.employeesm.ToList();
-            IEnumerable<Employee> emps = _unitOfWork.Employee.FindAll().ToList();
+            IEnumerable<Employee> emps = _unitOfWork.Employee.FindAllEmployee().ToList();
 
 
             if (emps.Any())
@@ -123,11 +123,17 @@ namespace Ibrahim_MVC_Frist.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(Employee emps)
+        public IActionResult DeletePost(int Id)
         {
+
             //_context.employeesm.Remove(emps);
             //_context.SaveChanges();
-            _unitOfWork.Employee.Delete(emps);
+            //_unitOfWork.Employee.Delete(emps);
+            //_unitOfWork.Save();
+
+            var emps = _unitOfWork.Employee.FindById(Id);
+            emps.IsDelete = true;
+            _unitOfWork.Employee.Update(emps);
             _unitOfWork.Save();
             TempData["Remove"] = "تم حذف البيانات بنجاح";
             return RedirectToAction("Index");

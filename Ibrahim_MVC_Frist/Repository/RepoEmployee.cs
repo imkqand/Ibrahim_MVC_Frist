@@ -19,5 +19,10 @@ namespace Ibrahim_MVC_Frist.Repository
             return employee;
         }
 
+        public IEnumerable<Employee> FindAllEmployee()
+        {
+            return _context.employeesm.ToList().Where(e=>e.IsDelete==false);
+        }
+
     }
 }

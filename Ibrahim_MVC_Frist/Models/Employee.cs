@@ -16,6 +16,8 @@ namespace Ibrahim_MVC_Frist.Models
 
         public bool Islock { get; set; } = false;
 
+        public bool IsDelete { get; set; } = false;
+
 
 
 
