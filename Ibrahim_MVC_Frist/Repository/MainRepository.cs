@@ -18,17 +18,17 @@ namespace Ibrahim_MVC_Frist.Repository
         {
 
             _context.Set<T>().Add(entity);
-            _context.SaveChanges();
+            // _context.SaveChanges();
         }
         public void Update(T entity)
         {
             _context.Set<T>().Update(entity);
-            _context.SaveChanges();
+            // _context.SaveChanges();
         }
         public void Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
-            _context.SaveChanges();
+            // _context.SaveChanges();
         }
 
 
@@ -40,12 +40,9 @@ namespace Ibrahim_MVC_Frist.Repository
         public T FindById(int id)
         {
             return _context.Set<T>().Find(id);
-        
+
         }
 
-        public IEnumerable<Category> FindAllCategory()
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

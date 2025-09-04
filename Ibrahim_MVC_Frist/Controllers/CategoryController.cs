@@ -1,6 +1,8 @@
 ﻿using Ibrahim_MVC_Frist.Data;
 using Ibrahim_MVC_Frist.Dtos;
+using Ibrahim_MVC_Frist.Filters;
 using Ibrahim_MVC_Frist.Models;
+using Ibrahim_MVC_Frist.Repository;
 using Ibrahim_MVC_Frist.Repository.Base;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -8,11 +10,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ibrahim_MVC_Frist.Controllers
 {
+    [SessionAuthorize]
     public class CategoryController : Controller
     {
        // private readonly ApplicationDbContext _context;
        // private readonly IRepository<Category> _repository;
-        private readonly IRepoCategory _repoCategory;
+       // private readonly IRepoCategory _repoCategory;
+
+        private readonly IUnitOfWork _unitOfWork;
 
         //public CategoryController(ApplicationDbContext context, IRepository<Category> repository)
         //{
@@ -22,10 +27,11 @@ namespace Ibrahim_MVC_Frist.Controllers
 
 
 
-        public CategoryController(IRepoCategory repoCategory)
+        public CategoryController(IUnitOfWork unitOfWork)
         {
           
-           _repoCategory = repoCategory;
+            _unitOfWork = unitOfWork;
+          
         }
 
 
@@ -33,7 +39,7 @@ namespace Ibrahim_MVC_Frist.Controllers
         public ActionResult<IEnumerable<Category>> GetAll()
         {
             //var categoriess = _context.Categories.ToList();
-            var categoriess = _repoCategory.FindAllCategory();
+            var categoriess = _unitOfWork.Category.FindAllCategory();
             return Ok(categoriess);
         }
 
@@ -59,7 +65,7 @@ namespace Ibrahim_MVC_Frist.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            IEnumerable<Category> category = _repoCategory.FindAllCategory();
+            IEnumerable<Category> category = _unitOfWork.Category.FindAllCategory();
 
 
 
@@ -140,7 +146,8 @@ namespace Ibrahim_MVC_Frist.Controllers
 
             if (ModelState.IsValid)
             {
-                _repoCategory.Add(category);
+                _unitOfWork.Category.Add(category);
+                _unitOfWork.Save();
                 TempData["Add"] = "تم اضافة البيانات ";
                 return RedirectToAction("Index");
             }
@@ -154,7 +161,7 @@ namespace Ibrahim_MVC_Frist.Controllers
         public IActionResult Edit(int Id)
         {
            // var cat = _context.Categories.Find(Id);
-            var cat = _repoCategory.FindById(Id);
+            var cat = _unitOfWork.Category.FindById(Id);
             return View(cat);
         }
 
@@ -165,7 +172,8 @@ namespace Ibrahim_MVC_Frist.Controllers
         {
             //_context.Categories.Update(category);
             //_context.SaveChanges();
-            _repoCategory.Update(category);
+            _unitOfWork.Category.Update(category);
+            _unitOfWork.Save();
             TempData["Update"] = "تم تحديث البيانات ";
             return RedirectToAction("Index");
 
@@ -176,7 +184,7 @@ namespace Ibrahim_MVC_Frist.Controllers
         public IActionResult Delete(int Id)
         {
             //var cat = _context.Categories.Find(Id);
-            var cat = _repoCategory.FindById(Id);
+            var cat = _unitOfWork.Category.FindById(Id);
             return View(cat);
         }
 
@@ -185,7 +193,8 @@ namespace Ibrahim_MVC_Frist.Controllers
         {
             //_context.Categories.Remove(category);
             //_context.SaveChanges();
-            _repoCategory.Delete(category);
+            _unitOfWork.Category.Delete(category);
+            _unitOfWork.Save();
             TempData["Remove"] = "تم حذف البيانات ";
             return RedirectToAction("Index");
 

@@ -8,6 +8,13 @@ namespace Ibrahim_MVC_Frist.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
+
+        private bool IsLoggedIn()
+        {
+            return !string.IsNullOrEmpty(HttpContext.Session.GetString("Username"));
+        }
+
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -15,11 +22,20 @@ namespace Ibrahim_MVC_Frist.Controllers
 
         public IActionResult Index()
         {
+            if(string.IsNullOrEmpty(HttpContext.Session.GetString("Username")))
+            {
+                return RedirectToAction("Login","Acoount");
+            }
             return View();
         }
 
         public IActionResult Privacy()
         {
+            if(!IsLoggedIn())
+            {
+                return RedirectToAction("Login", "Acoount");
+            }
+
             return View();
         }
 

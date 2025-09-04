@@ -11,6 +11,6 @@ namespace Ibrahim_MVC_Frist.Repository.Base
         void Add(T Entity);
         void Update(T Entity); 
         void Delete(T Entity);
-        IEnumerable<Category> FindAllCategory();
+       // IEnumerable<Category> FindAllCategory();
     }
 }

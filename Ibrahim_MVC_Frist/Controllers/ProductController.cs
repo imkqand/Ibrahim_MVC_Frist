@@ -1,5 +1,6 @@
 ﻿using Ibrahim_MVC_Frist.Data;
 using Ibrahim_MVC_Frist.Dtos;
+using Ibrahim_MVC_Frist.Filters;
 using Ibrahim_MVC_Frist.Models;
 using Ibrahim_MVC_Frist.Repository.Base;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ibrahim_MVC_Frist.Controllers
 {
+    [SessionAuthorize]
     public class ProductController : Controller
     {
 
@@ -21,15 +23,17 @@ namespace Ibrahim_MVC_Frist.Controllers
 
 
         //private readonly IRepository<Product> _repository;
-        private readonly IRepository<Category> _repositoryCategory;
-        private readonly IRepoProduct _repoProduct;
+        //private readonly IRepository<Category> _repositoryCategory;
+        //private readonly IRepoProduct _repoProduct;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ProductController(  IRepository<Category> repositoryCategory, IRepoProduct repoProduct)
+        public ProductController( IUnitOfWork unitOfWork)
         {
 
            // _repository = repository;
-            _repositoryCategory = repositoryCategory;
-            _repoProduct = repoProduct;
+            //_repositoryCategory = repositoryCategory;
+            //_repoProduct = repoProduct;
+            _unitOfWork = unitOfWork;
         }
 
         private void CreateCategoryList()
@@ -43,7 +47,7 @@ namespace Ibrahim_MVC_Frist.Controllers
 
             //List<Category> cat = _context.Categories.ToList();
 
-            IEnumerable<Category> cat = _repositoryCategory.FindAll().ToList();
+            IEnumerable<Category> cat = _unitOfWork.Category.FindAll().ToList();
             SelectList selectListItems = new SelectList(cat, "Id", "Name", 0);
             ViewBag.categoryDtos = selectListItems;
         }
@@ -67,7 +71,7 @@ namespace Ibrahim_MVC_Frist.Controllers
         //        })
         //        .ToList();
 
-                var products = _repoProduct.FindAllProducts().ToList();
+                var products = _unitOfWork.Product.FindAllProducts().ToList();
             return Ok(products);
         }
 
@@ -75,7 +79,7 @@ namespace Ibrahim_MVC_Frist.Controllers
         public IActionResult Index()
         {
             //IEnumerable<Product> Products = _context.Products.Include(e => e.Category).ToList();
-            IEnumerable<Product> Products = _repoProduct.FindAllProducts(); 
+            IEnumerable<Product> Products = _unitOfWork.Product.FindAllProducts(); 
 
             if (Products.Any())
             {  
@@ -113,7 +117,7 @@ namespace Ibrahim_MVC_Frist.Controllers
             {
                 //_context.Products.Add(Products);
                 //_context.SaveChanges();
-                _repoProduct.Add(Products);
+                _unitOfWork.Product.Add(Products);
                 TempData["Add"] = "تم اضافة البيانات بنجاح";
                 return RedirectToAction("Index");
             }
@@ -127,7 +131,7 @@ namespace Ibrahim_MVC_Frist.Controllers
         public IActionResult Edit(int Id)
         {
             //var products = _context.Products.Find(Id);
-            var products = _repoProduct.FindById(Id);
+            var products = _unitOfWork.Product.FindById(Id);
             CreateCategoryList();
             return View(products);
         }
@@ -137,7 +141,7 @@ namespace Ibrahim_MVC_Frist.Controllers
         {
             //_context.Products.Update(products);
             //_context.SaveChanges();
-            _repoProduct.Update(products);
+            _unitOfWork.Product.Update(products);
             TempData["Update"] = "تم تحديث البيانات بنجاح";
             return RedirectToAction("Index");
 
@@ -148,7 +152,7 @@ namespace Ibrahim_MVC_Frist.Controllers
         public IActionResult Delete(int Id)
         {
             //var products = _context.Products.Find(Id);
-            var products = _repoProduct.FindById(Id);
+            var products = _unitOfWork.Product.FindById(Id);
             CreateCategoryList();
             return View(products);
         }
@@ -158,7 +162,7 @@ namespace Ibrahim_MVC_Frist.Controllers
         {
             //_context.Products.Remove(products);
             //_context.SaveChanges();
-            _repoProduct.Delete(products);
+            _unitOfWork.Product.Delete(products);
             TempData["Remove"] = "تم حذف البيانات بنجاح";
             return RedirectToAction("Index");
 

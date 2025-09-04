@@ -39,6 +39,8 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Phone Number</th>
+                <th>Is Lock</th>
+
                 <th>Actions</th>
             </tr>
         </thead>
@@ -49,6 +51,18 @@
                     <td>@emps.Id</td>
                     <td>@emps.Name</td>
                     <td>@emps.Phone</td>
+                    <td>
+
+                        @if(emps.Islock)
+                        {
+                            <input type="checkbox" checked disabled />
+                        }
+                        else
+                        {
+                            <input type="checkbox" disabled />
+                        }
+
+                    </td>
 
                     <td>
                         <a asp-action="Edit" asp-route-id="@emps.Id" class="btn btn-warning">Edit</a>

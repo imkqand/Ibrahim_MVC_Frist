@@ -14,7 +14,31 @@
     <div>
         <label>Employee Phone</label>
         <textarea asp-for="Phone" name="Phone" class="form-control mb-3"></textarea>
+
     </div>
+
+
+    <div>
+        <label>Emolyee User</label>
+        <input asp-for="UserName" name="UserName" class="form-control" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+
+    </div>
+    <div>
+        <label>Emolyee Password</label>
+        <input asp-for="Password" name="Password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+
+    </div>
+
+    <div>
+        <label>Emolyee Lock</label>
+        <input asp-for="Islock" type="checkbox" name="Islock" class="form-check" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+
+    </div>
+
+
     <button type="submit" class="btn btn-danger">Delete</button>
 
 </form>

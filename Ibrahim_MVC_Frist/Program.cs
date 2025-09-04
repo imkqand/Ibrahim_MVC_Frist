@@ -18,8 +18,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(conectionString));
 
 builder.Services.AddScoped(typeof(IRepository<>),typeof (MainRepository<>));
-builder.Services.AddScoped<IRepoProduct, RepoProduct>();
-builder.Services.AddScoped<IRepoCategory, RepoCategory>();
+//builder.Services.AddScoped<IRepoProduct, RepoProduct>();
+//builder.Services.AddScoped<IRepoCategory, RepoCategory>();
+//builder.Services.AddScoped<IRepoEmployee, RepoEmployee>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 
 
@@ -39,6 +47,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthorization();
 

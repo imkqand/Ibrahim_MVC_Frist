@@ -1,18 +1,23 @@
 ﻿using Ibrahim_MVC_Frist.Data;
+using Ibrahim_MVC_Frist.Filters;
 using Ibrahim_MVC_Frist.Models;
 using Ibrahim_MVC_Frist.Repository.Base;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ibrahim_MVC_Frist.Controllers
 {
+    [SessionAuthorize]
     public class EmployeesController : Controller
     {
 
 
-        private readonly ApplicationDbContext _context;
-        private readonly IRepository<Employee> _repository;
+        //private readonly ApplicationDbContext _context;
+        //private readonly IRepository<Employee> _repository;
+
+       // private readonly IRepoEmployee _repoEmployee;
 
 
+       private readonly IUnitOfWork _unitOfWork;
 
         //public CategoryController(ApplicationDbContext context, IRepository<Category> repository)
         //{
@@ -20,15 +25,16 @@ namespace Ibrahim_MVC_Frist.Controllers
         //    _repository = _repository;
         //}
 
-        public EmployeesController(IRepository<Employee> repository)
+        public EmployeesController(IUnitOfWork unitOfWork)
         {
-            _repository = repository;   
+            _unitOfWork = unitOfWork;
+
         }
         [HttpGet]
         public ActionResult<IEnumerable<Employee>> GetAll()
         {
            // var emps = _context.employeesm.ToList();
-            var emps = _repository.FindAll().ToList();
+            var emps = _unitOfWork.Employee.FindAll().ToList();
             return Ok(emps);
         }
 
@@ -36,7 +42,7 @@ namespace Ibrahim_MVC_Frist.Controllers
         public IActionResult Index()
         {
             // IEnumerable<Employee> emps = _context.employeesm.ToList();
-            IEnumerable<Employee> emps = _repository.FindAll().ToList();
+            IEnumerable<Employee> emps = _unitOfWork.Employee.FindAll().ToList();
 
 
             if (emps.Any())
@@ -74,7 +80,8 @@ namespace Ibrahim_MVC_Frist.Controllers
             {
                 //_context.employeesm.Add(empl);
                 //_context.SaveChanges();
-                _repository.Add(empl);
+                _unitOfWork.Employee.Add(empl);
+                _unitOfWork.Save();
                 TempData["Add"] = "تم اضافة البيانات بنجاح";
                 return RedirectToAction("Index");
             }
@@ -90,7 +97,7 @@ namespace Ibrahim_MVC_Frist.Controllers
         public IActionResult Edit(int Id)
         {
            // var emps = _context.employeesm.Find(Id);
-            var emps = _repository.FindById(Id);
+            var emps = _unitOfWork.Employee.FindById(Id);
             return View(emps);
         }
 
@@ -99,7 +106,8 @@ namespace Ibrahim_MVC_Frist.Controllers
         {
             //_context.employeesm.Update(emps);
             //_context.SaveChanges();
-            _repository.Update(emps);
+            _unitOfWork.Employee.Update(emps);
+            _unitOfWork.Save();
             TempData["Update"] = "تم تحديث البيانات بنجاح";
             return RedirectToAction("Index");
 
@@ -110,7 +118,7 @@ namespace Ibrahim_MVC_Frist.Controllers
         public IActionResult Delete(int Id)
         {
            // var emps = _context.employeesm.Find(Id);
-            var emps = _repository.FindById(Id);
+            var emps = _unitOfWork.Employee.FindById(Id);
             return View(emps);
         }
 
@@ -119,11 +127,15 @@ namespace Ibrahim_MVC_Frist.Controllers
         {
             //_context.employeesm.Remove(emps);
             //_context.SaveChanges();
-            _repository.Delete(emps);
+            _unitOfWork.Employee.Delete(emps);
+            _unitOfWork.Save();
             TempData["Remove"] = "تم حذف البيانات بنجاح";
             return RedirectToAction("Index");
 
         }
+
+      
+
 
 
     }
