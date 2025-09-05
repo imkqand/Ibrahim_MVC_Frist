@@ -118,6 +118,7 @@ namespace Ibrahim_MVC_Frist.Controllers
                 //_context.Products.Add(Products);
                 //_context.SaveChanges();
                 _unitOfWork.Product.Add(Products);
+                _unitOfWork.Save();
                 TempData["Add"] = "تم اضافة البيانات بنجاح";
                 return RedirectToAction("Index");
             }
@@ -142,6 +143,7 @@ namespace Ibrahim_MVC_Frist.Controllers
             //_context.Products.Update(products);
             //_context.SaveChanges();
             _unitOfWork.Product.Update(products);
+            _unitOfWork.Save();
             TempData["Update"] = "تم تحديث البيانات بنجاح";
             return RedirectToAction("Index");
 

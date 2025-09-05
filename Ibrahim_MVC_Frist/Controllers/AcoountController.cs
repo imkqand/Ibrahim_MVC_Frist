@@ -35,10 +35,26 @@ namespace Ibrahim_MVC_Frist.Controllers
             var emp = _unitOfWork.Employee.Login(username, password);
             if (emp != null)
             {
+                if(emp.Islock)
+                {
+                    ViewBag.Error = "تم اغلاق هذا المستخدم يرجى مراجعة القسم المختص";
+                    return View();
+                }
+            
 
-                HttpContext.Session.SetString("Username", emp.Name);
-                HttpContext.Session.SetInt32("Id", emp.Id);
-                return RedirectToAction("Index", "Home");
+                if(emp.UserRoleId==1)
+                {
+                    HttpContext.Session.SetString("Username", emp.Name);
+                    HttpContext.Session.SetInt32("Id", emp.Id);
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    HttpContext.Session.SetString("UsernameEmployee", emp.Name);
+                    HttpContext.Session.SetInt32("Id", emp.Id);
+                    return RedirectToAction("Index", "HomeEmployee");
+
+                }
 
 
             }

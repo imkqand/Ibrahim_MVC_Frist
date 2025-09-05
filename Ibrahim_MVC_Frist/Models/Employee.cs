@@ -18,6 +18,13 @@ namespace Ibrahim_MVC_Frist.Models
 
         public bool IsDelete { get; set; } = false;
 
+        public int? UserDeleted { get; set; }
+
+        public DateTime DeleteDate { get; set; }
+
+        public int? UserRoleId { get; set; }
+
+        public UserRole? UserRole { get; set; }
 
 
 

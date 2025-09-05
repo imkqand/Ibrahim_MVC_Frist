@@ -2,6 +2,7 @@
 using Ibrahim_MVC_Frist.Filters;
 using Ibrahim_MVC_Frist.Models;
 using Ibrahim_MVC_Frist.Repository.Base;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ibrahim_MVC_Frist.Controllers
@@ -133,6 +134,8 @@ namespace Ibrahim_MVC_Frist.Controllers
 
             var emps = _unitOfWork.Employee.FindById(Id);
             emps.IsDelete = true;
+            emps.UserDeleted = HttpContext.Session.GetInt32("Id") ?? 0;
+            emps.DeleteDate = DateTime.Now;
             _unitOfWork.Employee.Update(emps);
             _unitOfWork.Save();
             TempData["Remove"] = "تم حذف البيانات بنجاح";

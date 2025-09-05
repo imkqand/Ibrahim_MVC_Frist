@@ -12,6 +12,7 @@ namespace Ibrahim_MVC_Frist.Data
         public DbSet<Category> Categories { get; set; }
        public DbSet<Product> Products { get; set; }
         public DbSet<Employee> employeesm { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
 
     }
 }
