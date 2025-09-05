@@ -15,7 +15,8 @@ builder.Services.AddControllersWithViews();
 var conectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(conectionString));
+options.UseLazyLoadingProxies().
+    UseSqlServer(conectionString));
 
 builder.Services.AddScoped(typeof(IRepository<>),typeof (MainRepository<>));
 //builder.Services.AddScoped<IRepoProduct, RepoProduct>();

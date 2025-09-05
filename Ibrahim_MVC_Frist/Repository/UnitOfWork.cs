@@ -1,4 +1,5 @@
 ﻿using Ibrahim_MVC_Frist.Data;
+using Ibrahim_MVC_Frist.Models;
 using Ibrahim_MVC_Frist.Repository.Base;
 
 namespace Ibrahim_MVC_Frist.Repository
@@ -14,6 +15,7 @@ namespace Ibrahim_MVC_Frist.Repository
             Employee = new RepoEmployee(_context);
             Product = new RepoProduct(_context);
             Category = new RepoCategory(_context);
+            Permissions = new MainRepository<Permission>(_context);
 
 
 
@@ -25,6 +27,8 @@ namespace Ibrahim_MVC_Frist.Repository
         public IRepoCategory Category { get; }
 
         public IRepoProduct Product { get; }
+
+        public IRepository<Permission> Permissions { get; }
 
         public void Save()
         {

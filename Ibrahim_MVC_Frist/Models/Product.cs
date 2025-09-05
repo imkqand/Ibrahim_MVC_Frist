@@ -11,7 +11,7 @@ namespace Ibrahim_MVC_Frist.Models
         public decimal Price { get; set; }        // السعر
         public int Quantity { get; set; }         // الكمية المتوفرة
         public int CategoryId { get; set; }      // الفئة أو التصنيف
-        public Category? Category { get; set; }
+        public virtual Category? Category { get; set; }
 
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow; // تاريخ الإضافة
         public bool IsAvailable { get; set; }

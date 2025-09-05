@@ -24,7 +24,7 @@ namespace Ibrahim_MVC_Frist.Models
 
         public int? UserRoleId { get; set; }
 
-        public UserRole? UserRole { get; set; }
+        public virtual UserRole? UserRole { get; set; }
 
 
 
