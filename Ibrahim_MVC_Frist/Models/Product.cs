@@ -16,5 +16,7 @@ namespace Ibrahim_MVC_Frist.Models
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow; // تاريخ الإضافة
         public bool IsAvailable { get; set; }
 
+        public bool IsDelete { get; set; } = false;
+
     }
 }

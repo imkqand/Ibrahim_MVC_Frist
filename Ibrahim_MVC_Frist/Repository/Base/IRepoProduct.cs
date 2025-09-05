@@ -1,4 +1,5 @@
 ﻿using Ibrahim_MVC_Frist.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ibrahim_MVC_Frist.Repository.Base
 {
@@ -6,6 +7,8 @@ namespace Ibrahim_MVC_Frist.Repository.Base
     {
        
         IEnumerable<Product> FindAllProducts();
-      
+
+        public IEnumerable<Product> FindAllProduct();
+
     }
 }

@@ -22,5 +22,10 @@ namespace Ibrahim_MVC_Frist.Repository
             IEnumerable<Product> Products = _context.Products.Include(e => e.Category).ToList();
             return Products;
         }
+
+        public IEnumerable<Product> FindAllProduct()
+        {
+            return _context.Products.ToList().Where(e => e.IsDelete == false);
+        }
     }
 }

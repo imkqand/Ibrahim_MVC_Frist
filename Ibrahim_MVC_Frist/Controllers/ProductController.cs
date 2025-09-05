@@ -79,7 +79,7 @@ namespace Ibrahim_MVC_Frist.Controllers
         public IActionResult Index()
         {
             //IEnumerable<Product> Products = _context.Products.Include(e => e.Category).ToList();
-            IEnumerable<Product> Products = _unitOfWork.Product.FindAllProducts(); 
+            IEnumerable<Product> Products = _unitOfWork.Product.FindAllProduct().ToList(); 
 
             if (Products.Any())
             {  
@@ -158,11 +158,18 @@ namespace Ibrahim_MVC_Frist.Controllers
         }
 
         [HttpPost]
-        public IActionResult Delete(Product products)
+        public IActionResult DeletePost(int Id)
         {
             //_context.Products.Remove(products);
             //_context.SaveChanges();
-            _unitOfWork.Product.Delete(products);
+            //_unitOfWork.Product.Delete(products);
+
+
+            var Pro = _unitOfWork.Product.FindById(Id);
+            Pro.IsDelete = true;
+            _unitOfWork.Product.Update(Pro);
+            _unitOfWork.Save();
+           
             TempData["Remove"] = "تم حذف البيانات بنجاح";
             return RedirectToAction("Index");
 
